@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        .blacktxt {
+            color: black;
+        }
+        #map {
+            height: 100%;
+            width: 50%;
+            margin-left: 25%;
+            margin-bottom: 10%;
+
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-image:url("https://images.designtrends.com/wp-content/uploads/2015/12/15054221/Cool-Grey-Background.jpg") ;
+            color: white;
+
+        }
+    </style>
+</head>
+<body>
+<h1><center>Terrain Map of Colorado</center></h1>
+<h3>:This map is intended to display topographical information relating to the state of Colorado.</h3>
+<p>:I chose this specific area to represent in my map because I am from Colorado. This map is trying to communicate the topographical information of the area so
+that it can be used in the planning of hiking and camping trips.</p>
+<div id="map"></div>
+<script>
+    var map;
+    var longs_peak ={lat: 40.255 ,lng:-105.6151};
+    var pikes_peak = {lat:38.8405 , lng:-105.0442};
+    var mount_Massive = {lat:39.1875 , lng:-106.4757};
+    var mount_Elbert = {lat:39.1178 , lng:-106.4454};
+    var mount_Harvard = {lat:38.9244 , lng:-106.3207};
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 39.000, lng: -105.500},
+            zoom: 8,
+            mapTypeId: google.maps.MapTypeId.TERRAIN,
+
+            styles:[
+                {
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#ebe3cd"
+                        }
+                    ]
+                },
+                {
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#523735"
+                        }
+                    ]
+                },
+                {
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#f5f1e6"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "administrative",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#c9b2a6"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "administrative.land_parcel",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#dcd2be"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "administrative.land_parcel",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#ae9e90"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "landscape.natural",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#dfd2ae"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "landscape.natural.terrain",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        {
+                            "color": "#c0c0c0"
+                        },
+                        {
+                            "saturation": -15
+                        },
+                        {
+                            "lightness": -100
+                        },
+                        {
+                            "visibility": "on"
+                        },
+                        {
+                            "weight": 1.5
+                        }
+                    ]
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#dfd2ae"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#93817c"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "poi.park",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        {
+                            "color": "#a5b076"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "poi.park",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#447530"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#f5f1e6"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.arterial",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#fdfcf8"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#f8c967"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#e9bc62"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.highway.controlled_access",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#e98d58"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.highway.controlled_access",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        {
+                            "color": "#db8555"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.local",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#806b63"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "transit.line",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#dfd2ae"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "transit.line",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#8f7d77"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "transit.line",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        {
+                            "color": "#ebe3cd"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "transit.station",
+                    "elementType": "geometry",
+                    "stylers": [
+                        {
+                            "color": "#dfd2ae"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        {
+                            "color": "#b9d3c2"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#92998d"
+                        }
+                    ]
+                }
+            ]
+        });
+        var lPInfo = '<h1 class="blacktxt">Longs Peak</h1>+ <p class="blacktxt"> Altitude:14,259 ft (4346 m)<br>Latitude:40.255<br>Longitude:-105.6151 <br> <a href="https://en.wikipedia.org/wiki/Longs_Peak">Learn More!</a> </p>';
+        var pPInfo ='<h1 class="blacktxt">Pikes Peak </h1>+ <p class="blacktxt"> Altitude:14,115 feet (4,302 m)<br>Latitude:38.8405<br>Longitude:-105.0442 <br> <a href="https://en.wikipedia.org/wiki/Pikes_Peak">Learn More!</a> </p>';
+        var mMInfo ='<h1 class="blacktxt">Mount Massive</h1>+ <p class="blacktxt"> Altitude:14,428 ft (4398 m)<br>Latitude:39.1875<br>Longitude:-106.4757 <br> <a href="https://en.wikipedia.org/wiki/Mount_Massive">Learn More!</a> </p>';
+        var mEInfo = '<h1 class="blacktxt">Mount Elbert</h1>+ <p class="blacktxt"> Altitude:14,440 ft (4401.2 m)<br>Latitude:39.1178<br>Longitude:-106.4454 <br> <a href="https://en.wikipedia.org/wiki/Mount_Elbert">Learn More!</a> </p>';
+        var mHInfo = '<h1 class="blacktxt">Mount Harvard</h1>+ <p class="blacktxt"> Altitude:14,421 ft (4395.6 m)<br>Latitude:38.9244<br>Longitude:-106.3207 <br> <a href="https://en.wikipedia.org/wiki/Mount_Harvard">Learn More!</a> </p>';
+        var marker1 = new google.maps.Marker({
+            position: longs_peak ,
+            map:map,
+            title: "Longs Peak"
+        });
+        var marker2 = new google.maps.Marker({
+            position: pikes_peak ,
+            map:map,
+            title: "Pikes Peak"
+        });
+        var marker3 = new google.maps.Marker({
+            position: mount_Massive ,
+            map:map,
+            title: "Mount Massive"
+        });
+        var marker4 = new google.maps.Marker({
+            position: mount_Elbert ,
+            map:map,
+            title: "Mount Elbert"
+        });
+        var marker5 = new google.maps.Marker({
+            position: mount_Harvard ,
+            map:map,
+            title: "Mount Harvard"
+        });
+        var infowindowLP = new google.maps.InfoWindow({
+            content: lPInfo
+        });
+        var infowindowPP = new google.maps.InfoWindow({
+            content: pPInfo
+        });
+        var infowindowMM = new google.maps.InfoWindow({
+            content: mMInfo
+        });
+        var infowindowME = new google.maps.InfoWindow({
+            content: mEInfo
+        });
+        var infowindowMH = new google.maps.InfoWindow({
+            content: mHInfo
+        });
+        marker1.addListener('click', function() {
+            infowindowLP.open(map, marker1);
+        });
+        marker2.addListener('click', function() {
+           infowindowPP.open(map, marker2);
+        });
+        marker3.addListener('click', function() {
+            infowindowMM.open(map, marker3);
+        });
+        marker4.addListener('click', function() {
+            infowindowME.open(map, marker4);
+        });
+        marker5.addListener('click', function() {
+            infowindowMH.open(map, marker5);
+        });
+
+
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJMMFp8QUYa88XJz9DPBRp-9sjhbRcFiA &callback=initMap"
+        async defer></script>
+</body>
+</html>
