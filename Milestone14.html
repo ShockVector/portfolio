@@ -1,0 +1,181 @@
+!-- This code is a modfied from the base example provided as part of the open layers quickstart guide https://openlayers.org/en/latest/doc/quickstart.html-->
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <style>
+        .map {
+            height: 90%;
+            width: 100%;
+        }
+    </style>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
+    <title>OpenLayers example</title>
+</head>
+<body>
+<h2>Milestone 9 Map</h2>
+<div id="map" class="map"></div>
+<script type="text/javascript">
+    var stroke = new ol.style.Stroke({color: 'black', width: 2});
+    var fill1 = new ol.style.Fill({color: 'red'});
+    var fill2 = new ol.style.Fill({color: 'green'});
+    var fill3 = new ol.style.Fill({color: 'blue'});
+    var fill4 = new ol.style.Fill({color: 'purple'});
+    var fill5 = new ol.style.Fill({color: 'yellow'});
+
+    var styles = {
+        'square': new ol.style.Style({
+            image: new ol.style.RegularShape({
+                fill: fill1,
+                stroke: stroke,
+                points: 4,
+                radius: 10,
+                angle: Math.PI / 4
+            })
+        }),
+        'octogon': new ol.style.Style({
+            image: new ol.style.RegularShape({
+                fill: fill1,
+                stroke: stroke,
+                points: 8,
+                radius: 5,
+                angle: Math.PI / 4
+            })
+        }),
+        'triangle': new ol.style.Style({
+            image: new ol.style.RegularShape({
+                fill: fill2,
+                stroke: stroke,
+                points: 3,
+                radius: 10,
+                rotation: Math.PI / 4,
+                angle: 0
+            })
+        }),
+        'star': new ol.style.Style({
+            image: new ol.style.RegularShape({
+                fill: fill3,
+                stroke: stroke,
+                points: 5,
+                radius: 10,
+                radius2: 4,
+                angle: 0
+            })
+        }),
+        'cross': new ol.style.Style({
+            image: new ol.style.RegularShape({
+                fill: fill4,
+                stroke: stroke,
+                points: 4,
+                radius: 10,
+                radius2: 0,
+                angle: 0
+            })
+        }),
+        'x': new ol.style.Style({
+            image: new ol.style.RegularShape({
+                fill: fill5,
+                stroke: stroke,
+                points: 4,
+                radius: 10,
+                radius2: 0,
+                angle: Math.PI / 4
+            })
+        })
+    };
+    var lakeKawaguchi = new ol.Feature({ });
+    var lakeMotosu = new ol.Feature({ });
+    var lakeSai = new ol.Feature({ });
+    var lakeShoji = new ol.Feature({ });
+    var lakeYamanaka = new ol.Feature({ });
+
+    var lK = new ol.geom.Point(
+        ol.proj.fromLonLat([138.75, 35.51])
+    );
+    var lM = new ol.geom.Point(
+        ol.proj.fromLonLat ([138.58, 35.46])
+    );
+    var  lSa= new ol.geom.Point(
+        ol.proj.fromLonLat ([138.68, 35.50])
+    );
+    var  lSh= new ol.geom.Point(
+        ol.proj.fromLonLat([138.61, 35.49])
+    );
+    var  lY = new ol.geom.Point(
+        ol.proj.fromLonLat([138.87, 35.41])
+    );
+    lakeKawaguchi.setGeometry(lK);
+    lakeMotosu.setGeometry(lM);
+    lakeSai.setGeometry(lSa);
+    lakeShoji.setGeometry(lSh);
+    lakeYamanaka.setGeometry(lY);
+
+    lakeKawaguchi.setStyle(styles["square"]);
+    lakeMotosu.setStyle(styles["triangle"]);
+    lakeSai.setStyle(styles["star"]);
+    lakeShoji.setStyle(styles["cross"]);
+    lakeYamanaka.setStyle(styles["x"]);
+
+
+
+   var  vector_layer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            features: [lakeYamanaka, lakeShoji,lakeSai, lakeMotosu,lakeKawaguchi]
+        })
+    });
+
+    var wmsGeologic = new ol.source.ImageWMS({
+        url: 'https://gbank.gsj.jp/ows/miscellaneous_00012_en',
+        params: {'LAYERS': 'geo_A'},
+        serverType: 'geoserver',
+        crossOrigin: 'anonymous',
+    });
+
+    var wmsLabels = new ol.source.ImageWMS({
+        url: 'http://internetmapping.net:8080/geoserver/ws_smiller24/wms?',
+
+        params: {'LAYERS': 'ws_smiller24:raill_jpn'},
+        serverType: 'geoserver',
+        crossOrigin: 'anonymous'
+    });
+    var wmsGeol = new ol.layer.Image({
+        source: wmsGeologic,
+        opacity : .4
+    });
+    var wmsLab= new ol.layer.Image({
+        source: wmsLabels,
+        opacity : .9
+    });
+
+    var monitorStations = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: 'https://the-rickest-rick.github.io/portfolio/obs_point.kml',
+            format: new ol.format.KML({
+                extractStyles:false
+            })
+        })
+    });
+
+    monitorStations.setStyle(styles["octogon"]);
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.Stamen({layer:'terrain'})
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([138.72, 35.36]),
+            zoom: 10
+        })
+    });
+
+    map.addLayer(wmsGeol);
+    map.addLayer(vector_layer);
+    map.addLayer(wmsLab);
+    map.addLayer(monitorStations);
+
+</script>
+</body>
+</html>
